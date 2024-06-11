@@ -1,6 +1,7 @@
 export const ScreenName = {
-  home: 'home',
-  drawer: 'drawer',
-  detail: 'detail',
-  account: 'account',
+  home: "home",
+  drawer: "drawer",
+  detail: "detail",
+  account: "account",
+  productDetail: "productDetail",
 };

@@ -1,8 +1,9 @@
-import Account from '../../screens/Account';
-import Detail from '../../screens/Detail';
-import Home from '../../screens/Home';
-import Dashboard from '../Drawer/DrawerContent';
-import {ScreenName} from './ScreenName';
+import Account from "../../screens/Account";
+import Detail from "../../screens/Detail";
+import Home from "../../screens/Home";
+import ProductDetail from "../../screens/ProductDetail";
+import Dashboard from "../Drawer/DrawerContent";
+import { ScreenName } from "./ScreenName";
 
 export const Routers = {
   home: {
@@ -20,5 +21,9 @@ export const Routers = {
   account: {
     name: ScreenName.account,
     component: Account,
+  },
+  productDetail: {
+    name: ScreenName.productDetail,
+    component: ProductDetail,
   },
 };
