@@ -12,20 +12,32 @@ import {
   IconSearch,
 } from "../../../../assets/icons";
 import { distanceHorizontal, textSizeStyle } from "../../../utils/Defined";
+import { ScreenName } from "../../../navigation/router/ScreenName";
+
 interface Props {
   headerTitle?: string;
   containerStyle?: any;
   pressGoBack?: boolean;
+  hideCartIcon?: boolean;
 }
 export default function Header(props: Props): React.ReactNode {
   const navigation = useNavigation();
-
+  const handleGoBack = () => {
+    if (props.pressGoBack) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: ScreenName.home }],
+        })
+      );
+    } else {
+      navigation.dispatch(DrawerActions.openDrawer());
+    }
+  };
   return (
     <View style={[styles.container, props.containerStyle]}>
       {props.pressGoBack ? (
-        <TouchableOpacity
-          onPress={() => navigation.dispatch(CommonActions.goBack())}
-        >
+        <TouchableOpacity onPress={handleGoBack}>
           <IconBack />
         </TouchableOpacity>
       ) : (
@@ -39,14 +51,18 @@ export default function Header(props: Props): React.ReactNode {
 
       <View style={styles.wrapRightHeader}>
         <TouchableOpacity
-          onPress={() => console.log("aaaaa")}
+          onPress={() => navigation.navigate(ScreenName.search)}
           style={{ marginRight: 10 }}
         >
           <IconSearch />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log("aaaaa")}>
-          <IconCart />
-        </TouchableOpacity>
+        {props.hideCartIcon ? null : (
+          <TouchableOpacity
+            onPress={() => navigation.navigate(ScreenName.cart)}
+          >
+            <IconCart />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

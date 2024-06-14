@@ -1,18 +1,15 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScreenName } from "../../navigation/router/ScreenName";
 import {
   distanceHorizontal,
   formatMoney,
   formatNumber,
   textSizeStyle,
+  windowWidth,
 } from "../../utils/Defined";
-import {
-  CommonActions,
-  useNavigation,
-  DrawerActions,
-} from "@react-navigation/native";
-import { windowWidth } from "../../utils/Defined";
-import { ScreenName } from "../../navigation/router/ScreenName";
+import { baseUriImage } from "../../connectors /APIDefined";
 
 interface Props {
   productInfo?: object;
@@ -36,22 +33,26 @@ export default function ItemProduct(props: Props): React.ReactNode {
     >
       <Image
         source={{
-          uri: "https://cdn.pixabay.com/photo/2017/08/20/10/39/leather-shoes-2661249_640.jpg",
+          uri:
+            baseUriImage + props?.productInfo?.media_gallery_entries[0]?.file,
         }}
         style={styles.imgProduct}
       />
       <Text numberOfLines={2} style={styles.productName}>
-        Têdn ádjh ákdjhasdkahs áhdiasuh dáiuh dái hádhasdjah ạdh ákdjahdkajsd
-        haksj dhakdjajaj dá ja dạ dakjdash dá
+        {props.productInfo?.name}
       </Text>
       <View style={{ marginVertical: 5 }}>
         <Text numberOfLines={1} style={styles.numberSold}>
-          {`Còn lại ${formatNumber(150000)}`}
+          {`${formatNumber(150000)} left`}
         </Text>
       </View>
       <View style={styles.wrapViewPrice}>
-        <Text style={styles.priceNotDiscount}>{formatMoney(15000)}</Text>
-        <Text style={styles.realPrice}>{formatMoney(13000)}</Text>
+        <Text style={styles.priceNotDiscount}>
+          {formatMoney(props?.productInfo?.price)}
+        </Text>
+        <Text style={styles.realPrice}>
+          {formatMoney(props?.productInfo?.price)}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -59,6 +60,7 @@ export default function ItemProduct(props: Props): React.ReactNode {
 const styles = StyleSheet.create({
   container: {
     width: widthItem,
+    marginBottom: 50,
   },
   wrapRightHeader: {
     flexDirection: "row",

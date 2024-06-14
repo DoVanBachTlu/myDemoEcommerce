@@ -4,4 +4,7 @@ export const ScreenName = {
   detail: "detail",
   account: "account",
   productDetail: "productDetail",
+  search: "search",
+  cart: "cart",
+  splash: "splash",
 };
