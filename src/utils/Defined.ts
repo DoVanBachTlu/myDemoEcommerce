@@ -28,6 +28,9 @@ export const formatMoney = (amount: number): string => {
   return amount?.toLocaleString("vi-VN") + " VND";
 };
 export const formatNumber = (value: number): string => {
+  if (value == null || isNaN(value)) {
+    return "0";
+  }
   if (value <= 999) {
     return value.toString();
   } else if (value >= 1000 && value <= 9999) {

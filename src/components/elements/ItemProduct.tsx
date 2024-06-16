@@ -23,7 +23,7 @@ export default function ItemProduct(props: Props): React.ReactNode {
   const navigation = useNavigation();
   const handleOnPressItem = () => {
     navigation.navigate(ScreenName.productDetail, {
-      productInfo: props?.productInfo,
+      sku: props?.productInfo?.sku,
     });
   };
   return (

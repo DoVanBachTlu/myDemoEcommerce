@@ -9,7 +9,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../../components/common/Header/Header";
 import ItemProduct from "../../components/elements/ItemProduct";
-import { APIManager, UrlAPIDefined } from "../../connectors /APIDefined";
+import { APIManagerAdmin, UrlAPIDefined } from "../../connectors /APIDefined";
 import { distanceHorizontal, textSizeStyle } from "../../utils/Defined";
 
 export default function Home(): React.ReactNode {
@@ -18,7 +18,7 @@ export default function Home(): React.ReactNode {
   const getListProducts = async () => {
     try {
       setLoading(true);
-      const response = await APIManager.get(UrlAPIDefined.listProducts, {
+      const response = await APIManagerAdmin.get(UrlAPIDefined.listProducts, {
         params: { searchCriteria: 2 },
       });
       setLoading(false);

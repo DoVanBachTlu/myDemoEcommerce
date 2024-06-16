@@ -8,8 +8,12 @@ import {
 } from "../../modules/AsyncStorage";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenName } from "../../navigation/router/ScreenName";
+import { useDispatch, useSelector } from "react-redux";
+import { getListItemsInCart } from "../../sliceRedux/cart";
 export default function Splash() {
   const navigation = useNavigation();
+  const isLoggedIn = useSelector((state) => state.customer.isLoggedIn);
+  const dispatch = useDispatch();
 
   // const handleLoginAdmin = async () => {
   //   try {
@@ -34,6 +38,11 @@ export default function Splash() {
   //     );
   //   }
   // };
+  const getNumberItemsInCart = async () => {
+    try {
+      await dispatch(getListItemsInCart());
+    } catch (error) {}
+  };
   useEffect(() => {
     // handleLoginAdmin();
     const timer = setTimeout(() => {
@@ -44,6 +53,9 @@ export default function Splash() {
     }, 2000);
 
     return () => clearTimeout(timer);
+    if (isLoggedIn) {
+      getNumberItemsInCart();
+    }
   }, []);
   return (
     <SafeAreaView

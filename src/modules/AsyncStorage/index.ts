@@ -4,6 +4,7 @@ export const localStorageName = {
   tokenAdmin: "tokenAdmin",
   tokenCustomer: "tokenCustomer",
   refreshToken: "refreshToken",
+  idQuote: "idQuote",
 };
 
 export const localStorageModule = {

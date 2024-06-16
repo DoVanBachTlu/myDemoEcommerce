@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { distanceHorizontal, windowWidth } from "../../utils/Defined";
 import { IconBack, IconClearTxtInput } from "../../../assets/icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { APIManager } from "../../connectors /APIDefined";
+import { APIManagerAdmin, searchProduct } from "../../connectors /APIDefined";
 export default function Search(): React.ReactNode {
   const navigation = useNavigation();
   const [querySearch, setQuerySearch] = useState("");
@@ -27,13 +27,12 @@ export default function Search(): React.ReactNode {
   }, [querySearch]);
   const searchProducts = async (query: string) => {
     try {
-      const response = await APIManager.get(`default/V1/search`, {
-        params: { searchCriteria: "quick_search_container" },
-      });
-      console.log("search ", response?.data);
+      const response = await searchProduct("name", query, "like");
+
+      console.log("search result", response?.data);
       return response.data;
     } catch (error) {
-      console.log("search error", error);
+      console.log("search result error", error);
     }
   };
   const handleSearch = () => {
