@@ -7,32 +7,55 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { distanceHorizontal, windowWidth } from "../../utils/Defined";
+import {
+  distanceHorizontal,
+  textSizeStyle,
+  windowWidth,
+} from "../../utils/Defined";
 import { IconBack, IconClearTxtInput } from "../../../assets/icons";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { APIManagerAdmin, searchProduct } from "../../connectors /APIDefined";
+import {
+  APIManagerAdmin,
+  UrlAPIDefined,
+  searchProduct,
+} from "../../connectors /APIDefined";
+import ItemProduct from "../../components/elements/ItemProduct";
 export default function Search(): React.ReactNode {
   const navigation = useNavigation();
   const [querySearch, setQuerySearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [listProducts, setListProducts] = useState([]);
   useEffect(() => {
     const timer = setTimeout(() => {
       if (querySearch.trim().length > 0) {
         searchProducts(querySearch);
       }
-    }, 3000);
-
+    }, 2000);
+    if (querySearch.trim().length === 0) {
+      setListProducts([]);
+    }
     return () => clearTimeout(timer);
+  }, [querySearch]);
+  useEffect(() => {
+    if (querySearch.trim().length === 0) {
+      setListProducts([]);
+    }
   }, [querySearch]);
   const searchProducts = async (query: string) => {
     try {
-      const response = await searchProduct("name", query, "like");
-
-      console.log("search result", response?.data);
-      return response.data;
+      setLoading(true);
+      const response = await APIManagerAdmin.get(UrlAPIDefined.listProducts, {
+        params: { searchCriteria: query },
+      });
+      setLoading(false);
+      setListProducts(response?.data?.items);
+      console.log("searchProducts==>", response);
     } catch (error) {
-      console.log("search result error", error);
+      console.log("searchProducts==>error", error);
     }
   };
   const handleSearch = () => {
@@ -40,9 +63,7 @@ export default function Search(): React.ReactNode {
       searchProducts(querySearch);
     }
   };
-  useEffect(() => {
-    searchProducts("aaaa");
-  }, []);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
@@ -65,11 +86,39 @@ export default function Search(): React.ReactNode {
             <IconClearTxtInput />
           </TouchableOpacity>
         </View>
+        {loading ? (
+          <View style={styles.centerScreen}>
+            <ActivityIndicator size="large" color={"black"} />
+          </View>
+        ) : listProducts && listProducts?.length > 0 ? (
+          <FlatList
+            style={{
+              flex: 1,
+              marginHorizontal: distanceHorizontal,
+              marginVertical: distanceHorizontal,
+            }}
+            data={listProducts}
+            columnWrapperStyle={{
+              justifyContent: "space-between",
+            }}
+            numColumns={2}
+            renderItem={({ item, index }) => {
+              console.log("item--->", item);
+              return <ItemProduct productInfo={item} key={index} />;
+            }}
+            keyExtractor={(item) => item?.id}
+          />
+        ) : (
+          <View style={styles.centerScreen}>
+            <Text style={textSizeStyle}>empty</Text>
+          </View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 }
 export const styles = StyleSheet.create({
+  centerScreen: { flex: 1, alignItems: "center", justifyContent: "center" },
   container: {
     flex: 1,
   },

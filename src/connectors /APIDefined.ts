@@ -26,6 +26,7 @@ interface FilterSearch {
   field: string;
   value: string;
   condition_type: string;
+  requestName: string;
 }
 
 interface FilterGroupSearch {
@@ -76,6 +77,7 @@ export const searchProduct = async (
   condition_type: string
 ) => {
   const searchCriteria: SearchCriteria = {
+    requestName: "advanced_search_container",
     filterGroups: [
       {
         filters: [
@@ -89,12 +91,13 @@ export const searchProduct = async (
     ],
   };
   try {
-    const response = await APIManager.get(UrlAPIDefined.search, {
+    const response = await APIManagerAdmin.get(UrlAPIDefined.search, {
       params: {
         searchCriteria,
       },
     });
-    console.log("search", response?.data);
+    console.log("search", response);
+    return response;
   } catch (error) {
     console.log("search error", error);
   }
