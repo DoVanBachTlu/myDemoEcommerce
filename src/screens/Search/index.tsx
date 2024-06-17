@@ -29,13 +29,14 @@ export default function Search(): React.ReactNode {
   const [querySearch, setQuerySearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [listProducts, setListProducts] = useState([]);
+  const lengthQuerySearch = querySearch.trim().length;
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (querySearch.trim().length > 0) {
+      if (lengthQuerySearch > 0) {
         searchProducts(querySearch);
       }
     }, 2000);
-    if (querySearch.trim().length === 0) {
+    if (lengthQuerySearch === 0) {
       setListProducts([]);
     }
     return () => clearTimeout(timer);
@@ -55,7 +56,7 @@ export default function Search(): React.ReactNode {
     }
   };
   const handleSearch = () => {
-    if (querySearch.trim().length > 0) {
+    if (lengthQuerySearch > 0) {
       searchProducts(querySearch);
     }
   };
