@@ -110,7 +110,7 @@ export default function Search(): React.ReactNode {
           />
         ) : (
           <View style={styles.centerScreen}>
-            <Text style={textSizeStyle}>empty</Text>
+            <Text style={textSizeStyle.headerScreen}>empty</Text>
           </View>
         )}
       </SafeAreaView>
