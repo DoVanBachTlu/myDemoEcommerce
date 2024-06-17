@@ -40,11 +40,7 @@ export default function Search(): React.ReactNode {
     }
     return () => clearTimeout(timer);
   }, [querySearch]);
-  useEffect(() => {
-    if (querySearch.trim().length === 0) {
-      setListProducts([]);
-    }
-  }, [querySearch]);
+
   const searchProducts = async (query: string) => {
     try {
       setLoading(true);
